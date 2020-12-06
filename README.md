@@ -3,8 +3,6 @@
 *code coming soon...*
 
 Statistics: the size of constructed dataset depends on the number of aspects we picked from each (document, summary) pair. 
-For example, the size of CNN/DM training set is 300K, if we pick 4 aspects on each example, then the size of constructed dataset will be 1200K.
+For example, the size of CNN/DM training set is 300K, if we pick 10 aspects on each example, then the constructed dataset will be 3M (document, aspect, summary) triples.
 
-[example.json](example.json) is a tiny demo set of constructed training examples with our weakly supervised approach.
-full version coming soon..
-
+The constructed dataset is available [here](https://drive.google.com/file/d/17ZeJsxyottRyvfzguedoET7OFkWSgJJK/view?usp=sharing).
