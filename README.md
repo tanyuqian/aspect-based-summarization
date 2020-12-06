@@ -6,8 +6,7 @@ This repo contains preliminary code of the following paper:
 Bowen Tan, Lianhui Qin, Eric P. Xing, Zhiting Hu \
 EMNLP 2020 
 
-*code coming soon...*
-
+## Weakly-supervised Dataset
 Statistics: the size of constructed dataset depends on the number of aspects we picked from each ```(document, summary)``` pair. 
 For example, the size of CNN/DM training set is 300K, if we pick 10 aspects on each example, then the constructed dataset will be 3M ```(document, aspect, summary)``` triples.
 
@@ -38,3 +37,7 @@ Example:
     ...
 ]
 ```
+
+## Code Usage
+
+*code coming soon...*
