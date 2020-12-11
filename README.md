@@ -6,13 +6,37 @@ This repo contains preliminary code of the following paper:
 Bowen Tan, Lianhui Qin, Eric P. Xing, Zhiting Hu \
 EMNLP 2020 
 
-## Weakly-supervised Dataset
-Statistics: the size of constructed dataset depends on the number of aspects we picked from each ```(document, summary)``` pair. 
-For example, the size of CNN/DM training set is 300K, if we pick 10 aspects on each example, then the constructed dataset will be 3M ```(document, aspect, summary)``` triples.
+## Getting Started
+Given a document and a target aspect (e.g.,
+a topic of interest), aspect-based abstractive
+summarization attempts to generate a summary with respect to the aspect. Previous studies usually assume a small pre-defined set of
+aspects and fall short of summarizing on other
+diverse topics. In this work, we study summarizing on arbitrary aspects relevant to the document, which significantly expands the application of the task in practice. 
+Due to the lack
+of supervision data, we develop a new weak
+supervision construction method and an aspect
+modeling scheme, both of which integrate rich
+external knowledge sources such as ConceptNet and Wikipedia. Experiments show our approach achieves performance boosts on summarizing both real and synthetic documents
+given pre-defined or arbitrary aspects.
 
-The constructed dataset is available [here](https://drive.google.com/file/d/17ZeJsxyottRyvfzguedoET7OFkWSgJJK/view?usp=sharing). It includes ```(document, aspect, summary)``` triples, reasonings from ConceptNet and extracted important words from Wikipedia (more details can be found in the paper). 
+## Weak Supervision Construction
+We construct weak supervisions from CNN/DailyMail dataset (Hermann et al., 2015) 
+which contains ~300K ```(document, summary)``` pairs.
 
-Example:
+### Download the Constructed Dataset
+
+The constructed dataset is available [here](https://drive.google.com/file/d/17ZeJsxyottRyvfzguedoET7OFkWSgJJK/view?usp=sharing). 
+
+It contains ~4M ```(document, aspect, summary)``` triples stored in JSON format including these keys:
+* ```document```: the document from CNN/DM dataset.
+* ```global summary```: the generic summary from CNN/DM dataset.
+* ```aspect```: an extracted aspect.
+* ```summary```: constructed summary with respect the aspect.
+* ```reasoning```: one or multiple knowledge terms from ConceptNet knowledge graph, indicating reasons to construct the summary given the aspect. Each term is in the format of ```ConceptNet: [[head entity]] relation [[tail entity]]```.
+* ```important words```: extracted (<= 20) words from the document which are most related to the aspect. We use the Wikipedia page of the
+aspect for filtering the words. (If Wikipedia does not have a page of the aspect, it would be an empty list here.)
+
+An example is as below. 
 ```
 [
     {
@@ -38,6 +62,10 @@ Example:
 ]
 ```
 
-## Code Usage
+### Build you own dataset
+We provide our code to construct our dataset in [weak_supervision_construction/](weak_supervision_construction/), including handy APIs of ConceptNet and Wikipedia.
+Feel free to play with it:)
+
+## Model
 
 *code coming soon...*
