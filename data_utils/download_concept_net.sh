@@ -1,0 +1,1 @@
+perl data_utils/gdown.pl https://drive.google.com/file/d/1WM34NKTyAm4o0DX3B74XcMG7h7sKPrp9/view?usp=sharing extracted_concept_net.json

@@ -2,70 +2,112 @@
 
 This repo contains preliminary code of the following paper:
 
-[Summarizing Text on Any Aspects: A Knowledge-Informed Weakly-Supervised Approach](https://arxiv.org/abs/2010.06792) \
+**Summarizing Text on Any Aspects: A Knowledge-Informed Weakly-Supervised Approach**\
 Bowen Tan, Lianhui Qin, Eric P. Xing, Zhiting Hu \
-EMNLP 2020 
+EMNLP 2020 \
+[[ArXiv]](https://arxiv.org/abs/2010.06792)
+[[Slides]](https://drive.google.com/file/d/1i7HJOX16f54rYPgAtpkQ3FCXkVkmC0Cg/view?usp=sharing)
+
 
 ## Getting Started
-Given a document and a target aspect (e.g.,
-a topic of interest), aspect-based abstractive
-summarization attempts to generate a summary with respect to the aspect. Previous studies usually assume a small pre-defined set of
-aspects and fall short of summarizing on other
-diverse topics. In this work, we study summarizing on arbitrary aspects relevant to the document, which significantly expands the application of the task in practice. 
-Due to the lack
-of supervision data, we develop a new weak
-supervision construction method and an aspect
-modeling scheme, both of which integrate rich
-external knowledge sources such as ConceptNet and Wikipedia. Experiments show our approach achieves performance boosts on summarizing both real and synthetic documents
-given pre-defined or arbitrary aspects.
+* Given a document and a target aspect (e.g., a topic of interest), aspect-based abstractive summarization attempts to generate a summary with respect to the aspect.
+* In this work, we study summarizing on arbitrary aspects relevant to the document.
+* Due to the lack of supervision data, we develop a new weak supervision construction method integrating rich external knowledge sources such as ```ConceptNet``` and ```Wikipedia```.
 
-## Weak Supervision Construction
-We construct weak supervisions from CNN/DailyMail dataset (Hermann et al., 2015) 
-which contains ~300K ```(document, summary)``` pairs.
-
-### Download the Constructed Dataset
-
-The constructed dataset is available [here](https://drive.google.com/file/d/17ZeJsxyottRyvfzguedoET7OFkWSgJJK/view?usp=sharing). 
-
-It contains ~4M ```(document, aspect, summary)``` triples stored in JSON format including these keys:
-* ```document```: the document from CNN/DM dataset.
-* ```global summary```: the generic summary from CNN/DM dataset.
-* ```aspect```: an extracted aspect.
-* ```summary```: constructed summary with respect the aspect.
-* ```reasoning```: one or multiple knowledge terms from ConceptNet knowledge graph, indicating reasons to construct the summary given the aspect. Each term is in the format of ```ConceptNet: [[head entity]] relation [[tail entity]]```.
-* ```important words```: extracted (<= 20) words from the document which are most related to the aspect. We use the Wikipedia page of the
-aspect for filtering the words. (If Wikipedia does not have a page of the aspect, it would be an empty list here.)
-
-An example is as below. 
+## Requirements
+Our python version is ```3.8```, required packages can be installed by
+```shell
+pip install -r requrements.txt
 ```
-[
-    {
-        "document": "LONDON, England (CNN) -- French Foreign Minister Bernard Kouchner's declaration that France had to prepare for the possibility of war against Iran over its nuclear program was not conventional diplomatic behavior. But then Kouchner was never expected to be a soft-soaper on the diplomatic scene. French foreign minister Bernard Kouchner has a reputation for challenging convention and authority. A surprise appointment from the Socialist ranks to Nicolas Sarkozy's conservative government, the founder of Medicins Sans Frontiers has always challenged convention and authority. The former UN Secretary General Boutros Boutros-Ghali once called Kouchner 'an unguided missile' and the man himself has been known to declare: \"To change the law you sometimes have to break the law\". He was in his youth one of the leaders of the students revolt in France in May 1968. Kouchner is a humanitarian as well as a patriot, with a strong commitment to human rights. Unusually for a man of the Left, he supported the US-led intervention in Iraq (while criticizing the aftermath). But he did so on the grounds of Saddam Hussein's denial of human rights, not his possible possession of weapons of mass destruction. His and President Sarkozy's concern for human rights lies behind their eagerness to join Gordon Brown's Britain in a new push for action in Darfur. Bernard Kouchner did not come to his position with any of former President Chirac's instinctive distrust of the United States. Washington, which has been critical of some European states for their weakness in confronting Teheran, will have been delighted by his 'get serious' warning to Teheran. But the plain-speaking Kouchner is unlikely to be deterred by fears of upsetting the White House when he has criticisms to make of US policy. How much should be made of his words on Iran remains unclear at this stage. They were scarcely on the same scale as President Chirac's threat when he was still in office to retaliate with nuclear strikes against any state found to be responsible for a large-scale terrorist attack on France. But they are all of a piece with France's new high-profile style under the presidency of Nicolas Sarkozy. Mr Kouchner, for example, became the first French Foreign Minister to visit Iraq since 1988, insisting that there could only be a political solution to the country's problems, not a military one, and offering France's services as a mediator and 'honest broker' between Sunnis, Shiites and Kurds. On Iran he is, in a way, merely echoing the words of his President who declared in a speech last month that a nuclear-armed Iran would be 'unacceptable' and describing the stand-off over its nuclear program as 'undoubtedly the most serious crisis before us today'. Certainly Mr Kouchner is making clear that France no longer takes the view once expressed by President Chirac that a nuclear-armed Iran might be inevitable. In continuing to ratchet up the rhetoric over that threat and to underline the West's resolution on Iran's nuclear enrichment program Mr Kouchner is supplementing his president's warnings. Neither is saying that military intervention against Iran is imminent or inevitable. Neither has yet confirmed that France would be part of any such military action. But both are stressing the risks which are piling up as a result of Teheran's brinkmanship. Perhaps the strongest lesson though from Mr Kouchner's intervention is his underlining that the new administration in France is not a knee-jerk anti-American one -- and that France is in the business of reclaiming a role at the top diplomatic tables. E-mail to a friend.",
-        "global summary": "French FM Kouchner has told France to prepare for possibility of war with Iran. Was a surprise appointment to Nicolas Sarkozy's conservative government. Also the first French Foreign Minister to visit Iraq since 1988. Founder of Medicins Sans Frontiers, also  French student leader in May 1968.",
-        "aspect summaries": [
-            {
-                "aspect": "france",
-                "summary": "French FM Kouchner has told France to prepare for possibility of war with Iran. Was a surprise appointment to Nicolas Sarkozy's conservative government. Also the first French Foreign Minister to visit Iraq since 1988. Founder of Medicins Sans Frontiers, also  French student leader in May 1968.",
-                "reasonings": "ConceptNet: [[french]] HasContext [[france]]; ConceptNet: [[nicolas_sarkozy]] RelatedTo [[france]]",
-                "important_words": ["france", "nuclear", "sarkozy", "bernard", "president", "intervention", "diplomatic", "nicolas", "french", "convention", "foreign", "rights", "military", "human", "minister", "scale", "iraq", "authority", "armed", "threat" ]
-            },
-            {
-                "aspect": "iran",
-                "summary": "French FM Kouchner has told France to prepare for possibility of war with Iran. Also the first French Foreign Minister to visit Iraq since 1988.",
-                "reasonings": "ConceptNet: [[war]] RelatedTo [[iran]]; ConceptNet: [[iraq]] RelatedTo [[iran]]",
-                "important_words": ["iran", "france", "nuclear", "president", "diplomatic", "program", "foreign", "rights", "military", "human", "minister", "scale", "iraq", "authority", "frontiers", "armed", "kurds", "revolt", "saddam", "action"]
-            },
-            ...
-        ]
-    },
-    ...
-]
+Our code can run on a single ```GTX 1080Ti``` GPU.
+
+## Datasets
+### Weakly Supervised Dataset
+Our constructed weakly supervised dataset can be downloaded by 
+```shell
+bash data_utils/download_weaksup.sh
 ```
+Downloaded data will be saved into ```data/weaksup/```.
 
-### Build you own dataset
-We provide our code to construct our dataset in [weak_supervision_construction/](weak_supervision_construction/), including handy APIs of ConceptNet and Wikipedia.
-Feel free to play with it:)
+We also provide the code to construct it. For more details, see
+* [WEAK_SUPERVISION_CONSTRUCTION.md](WEAK_SUPERVISION_CONSTRUCTION.md)
 
-## Model
+### MA-News Dataset
+MA-News Dataset is a aspect summarization dataset constructed by [(Frermann et al.)](https://www.aclweb.org/anthology/P19-1630/) . 
+Its aspects are restricted to only 6 coarsegrained topics. We use MA-News dataset for our automatic evaluation. Scripts to make MA-News is [here](https://github.com/ColiLea/aspect_based_summarization).
 
-*code coming soon...*
+A JSON version processed by us can be download by 
+```shell
+bash data_utils/download_manews.sh
+```
+Downloaded data will be saved into ```data/manews/```.
+
+
+## Weakly Supervised Model
+### Train
+Run this command to finetune a weakly supervised model from pretrained BART model [(Lewis et al.)](https://arxiv.org/abs/1910.13461).
+```shell
+python finetune.py --dataset_name weaksup --train_docs 100000 --n_epochs 1
+```
+Training logs and checkpoints will be saved into ```logs/weaksup/docs100000/``` 
+
+The training takes ~48h on a single GTX 1080Ti GPU. You may want to directly download the training log and the trained model [here](https://drive.google.com/file/d/1WziaFFQzTzsKtWj7tPQf67p_J53uiFkV/view?usp=sharing). 
+
+### Generation
+Run this command to generate on MA-News test set with the weakly supervised model.
+```shell
+python generate.py --log_path logs/weaksup/docs100000/
+```
+Source texts, target texts, generated texts will be saved as ```test.source```, ```test.gold```, and ```test.hypo``` respectively, into the log dir: ```logs/weaksup/docs100000/```.
+
+### Evaluation
+To run evaluation, make sure you have installed ```java``` and ```files2rouge``` on your device.
+
+First, download stanford nlp by
+```shell
+python data_utils/download_stanford_core_nlp.py
+```
+and run 
+```shell
+bash evaluate.sh logs/weaksup/docs100000/
+```
+to get rouge scores. Results will be saved in ```logs/weaksup/docs100000/rouge_scores.txt```.
+
+## Finetune with Ma-News Training Data
+### Baseline
+Run this command to finetune a BART model with 1K MA-News training data examples.
+```shell
+python finetune.py --dataset_name manews --train_docs 1000 --wiki_sup False
+python generate.py --log_path logs/manews/docs1000/ --wiki_sup False
+bash evaluate.sh logs/manews/docs1000/
+```
+Results will be saved in ```logs/manews/docs1000/```.
+
+### + Weak Supervision 
+Run this command to finetune with 1K MA-News training data examples starting with our weakly supervised model.
+```shell
+python finetune.py --dataset_name manews --train_docs 1000 --pretrained_ckpt logs/weaksup/docs100000/best_model.ckpt
+python generate.py --log_path logs/manews_plus/docs1000/
+bash evaluate.sh logs/manews_plus/docs1000/
+```
+Results will be saved in ```logs/manews_plus/docs1000/```.
+
+
+## Results
+
+Results on MA-News datasets are as below (same setting as paper Table 2). 
+
+All the detailed logs, including training log, generated texts, and rouge scores, are available [here](https://drive.google.com/file/d/1TuFhwR16GBWvw7yR33wLSY42AbNQ_tWI/view?usp=sharing).
+
+*(Note: The result numbers may be slightly different from those in the paper due to slightly different implementation details and random seeds, while the improvements over comparison methods are consistent.)*
+
+
+| Model                       | ROUGE-1 | ROUGE-2 | ROUGE-L |
+|-----------------------------|---------|---------|---------|
+| Weak-Sup Only               | 28.41   | 10.18   | 25.34   |
+| MA-News-Sup 1K              | 24.34   | 8.62    | 22.40   |
+| MA-News-Sup 1K + Weak-Sup   | 34.10   | 14.64   | 31.45   |
+| MA-News-Sup 3K              | 26.38   | 10.09   | 24.37   |
+| MA-News-Sup 3K + Weak-Sup   | 37.40   | 16.87   | 34.51   |
+| MA-News-Sup 10K             | 38.71   | 18.02   | 35.78   |
+| MA-News-Sup 10K  + Weak-Sup | 39.92   | 18.87   | 36.98   |
