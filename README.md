@@ -73,7 +73,7 @@ bash evaluate.sh logs/weaksup/docs100000/
 ```
 to get rouge scores. Results will be saved in ```logs/weaksup/docs100000/rouge_scores.txt```.
 
-## Finetune with Ma-News Training Data
+## Finetune with MA-News Training Data
 ### Baseline
 Run this command to finetune a BART model with 1K MA-News training data examples.
 ```shell
@@ -95,7 +95,7 @@ Results will be saved in ```logs/manews_plus/docs1000/```.
 
 ## Results
 
-Results on MA-News datasets are as below (same setting as paper Table 2). 
+Results on MA-News dataset are as below (same setting as paper Table 2). 
 
 All the detailed logs, including training log, generated texts, and rouge scores, are available [here](https://drive.google.com/file/d/1TuFhwR16GBWvw7yR33wLSY42AbNQ_tWI/view?usp=sharing).
 
