@@ -21,7 +21,7 @@ pip install -r requrements.txt
 ```
 Our code can run on a single ```GTX 1080Ti``` GPU.
 
-## Download Datasets & Knowledge Sources
+## Datasets & Knowledge Sources
 ### Weakly Supervised Dataset
 Our constructed weakly supervised dataset can be downloaded by 
 ```shell
