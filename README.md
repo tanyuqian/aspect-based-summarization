@@ -21,7 +21,7 @@ pip install -r requrements.txt
 ```
 Our code can run on a single ```GTX 1080Ti``` GPU.
 
-## Datasets
+## Download Datasets & Knowledge Sources
 ### Weakly Supervised Dataset
 Our constructed weakly supervised dataset can be downloaded by 
 ```shell
@@ -42,6 +42,17 @@ bash data_utils/download_manews.sh
 ```
 Downloaded data will be saved into ```data/manews/```.
 
+### Knowledge Graph - ConceptNet
+ConceptNet is a huge multilingual commonsense knowledge graph. 
+We extract an English subset that can be downloaded by
+```shell
+bash data_utils/download_concept_net.sh
+```
+
+### Knowledge Base - Wikipedia
+Wikipedia is an encyclopaedic knowledge base.
+We use its [python API](https://wikipedia.readthedocs.io/en/latest/) to access it online,
+so make sure your web connection is good when running our code.
 
 ## Weakly Supervised Model
 ### Train
