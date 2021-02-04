@@ -122,3 +122,13 @@ All the detailed logs, including training log, generated texts, and rouge scores
 | MA-News-Sup 3K + Weak-Sup   | 37.40   | 16.87   | 34.51   |
 | MA-News-Sup 10K             | 38.71   | 18.02   | 35.78   |
 | MA-News-Sup 10K  + Weak-Sup | 39.92   | 18.87   | 36.98   |
+
+
+## Demo
+We provide a demo on a real news on Feb. 2021. (see [demo_input.json](demo_input.json)).
+
+To run the demo, download our trained model [here](https://drive.google.com/file/d/1WziaFFQzTzsKtWj7tPQf67p_J53uiFkV/view?usp=sharing), and run the command below
+```shell
+python demo.py --ckpt_path logs/weaksup/docs100000/best_model.ckpt
+```
+
